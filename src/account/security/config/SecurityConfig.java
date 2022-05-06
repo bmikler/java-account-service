@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/actuator/shutdown").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/signup").permitAll()
                 .antMatchers("/api/empl/payment").hasRole(USER.name())

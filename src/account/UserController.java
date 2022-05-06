@@ -26,6 +26,7 @@ public class UserController {
     @GetMapping("/empl/payment")
     public ResponseEntity<?> getPayment(@AuthenticationPrincipal User user){
 
+
         return ResponseEntity.ok(userDtoMapper.mapToDtoResponse(user));
     }
 

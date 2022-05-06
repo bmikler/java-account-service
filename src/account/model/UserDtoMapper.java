@@ -15,7 +15,7 @@ public class UserDtoMapper {
                 user.getId(),
                 user.getName(),
                 user.getLastname(),
-                user.getEmail()
+                user.getEmail().toLowerCase()
         );
     }
 
