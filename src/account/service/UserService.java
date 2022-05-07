@@ -25,6 +25,10 @@ public class UserService implements UserDetailsService {
 
     public UserDtoResponse save(UserDtoRequest user) {
 
+        if (user == null) {
+            throw new IllegalArgumentException("User can`t be null!");
+        }
+
         userRepository.findByEmailIgnoreCase(user.getEmail())
                 .ifPresent(p -> {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User exist!");
