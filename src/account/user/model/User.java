@@ -1,6 +1,5 @@
-package account.model;
+package account.user.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +23,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
-    private AppUserRole role;
+    private UserRole role;
 
     private boolean enabled;
     private boolean locked;

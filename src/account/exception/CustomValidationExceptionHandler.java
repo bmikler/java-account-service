@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 public class CustomValidationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 ex.getBindingResult().getFieldError().getDefaultMessage(),
-                request.getDescription(false));
+                request.getDescription(false).replaceFirst("uri=",""));
 
         return new ResponseEntity(exceptionResponse, status);
 

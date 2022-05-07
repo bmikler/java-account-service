@@ -1,4 +1,4 @@
-package account.security;
+package account.security.password;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

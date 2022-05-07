@@ -1,7 +1,5 @@
 package account.security.config;
 
-import account.model.AppUserRole;
-import account.security.PasswordConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static account.model.AppUserRole.*;
+import static account.user.model.UserRole.*;
 
 
 @Configuration
@@ -33,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/signup").permitAll()
                 .antMatchers("/api/empl/payment").hasRole(USER.name())
+                .antMatchers("/api/auth/changepass").hasRole(USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

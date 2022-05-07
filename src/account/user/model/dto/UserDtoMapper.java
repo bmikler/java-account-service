@@ -1,5 +1,7 @@
-package account.model;
+package account.user.model.dto;
 
+import account.user.model.UserRole;
+import account.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,9 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDtoMapper {
-
-    private final PasswordEncoder passwordEncoder;
-
     public UserDtoResponse mapToDtoResponse(User user) {
 
         if (user == null) {
@@ -33,11 +32,11 @@ public class UserDtoMapper {
         User user = new User();
         user.setName(userDtoRequest.getName());
         user.setLastname(userDtoRequest.getLastname());
-        user.setEmail(userDtoRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(userDtoRequest.getPassword()));
+        user.setEmail(userDtoRequest.getEmail().toLowerCase());
+        user.setPassword(userDtoRequest.getPassword());
         user.setEnabled(true);
         user.setLocked(false);
-        user.setRole(AppUserRole.USER);
+        user.setRole(UserRole.USER);
 
         return user;
     }

@@ -1,4 +1,4 @@
-package account.security;
+package account.security.password;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -17,6 +17,6 @@ public class PasswordSafetyValidator implements ConstraintValidator<Password, St
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !BREACHED_PASSWORDS.contains(value);
+        return value != null && !BREACHED_PASSWORDS.contains(value);
     }
 }

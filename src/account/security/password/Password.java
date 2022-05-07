@@ -1,4 +1,4 @@
-package account.security;
+package account.security.password;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

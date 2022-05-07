@@ -1,4 +1,4 @@
-package account.model;
+package account.user.model.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
