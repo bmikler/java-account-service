@@ -21,7 +21,7 @@ public class UserDtoRequest {
     @NotBlank
     private String lastname;
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@acme.com+$", message = "Email bust be registered in acme.com domain")
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@acme.com+$", message = "Email must be registered in acme.com domain")
     private String email;
     @NotBlank
     @Size(min = 12, message = "The password length must be at least 12 chars!")

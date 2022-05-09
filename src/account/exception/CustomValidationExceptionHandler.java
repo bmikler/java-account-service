@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-@RestController
 public class CustomValidationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -22,11 +21,13 @@ public class CustomValidationExceptionHandler extends ResponseEntityExceptionHan
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
-                ex.getBindingResult().getFieldError().getDefaultMessage(),
+                ex.getFieldError().getDefaultMessage(),
                 request.getDescription(false).replaceFirst("uri=",""));
 
         return new ResponseEntity(exceptionResponse, status);
 
         }
-    }
+
+
+}
 

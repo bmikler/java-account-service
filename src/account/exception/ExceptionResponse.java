@@ -2,8 +2,8 @@ package account.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
