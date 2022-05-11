@@ -21,11 +21,6 @@ public class UserController {
     private final UserService userService;
     private final UserDtoMapper userDtoMapper;
 
-    @GetMapping("/empl/payment")
-    public ResponseEntity<?> getPayment(@AuthenticationPrincipal User user){
-        return ResponseEntity.ok(userDtoMapper.mapToDtoResponse(user));
-    }
-
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid UserDtoRequest user) {
         UserDtoResponse userSaved = userService.save(user);
