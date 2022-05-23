@@ -1,9 +1,12 @@
-package account.payment;
+package account.payment.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +14,6 @@ import lombok.RequiredArgsConstructor;
 public class PaymentDtoResponse {
     private String name;
     private String lastname;
-    private String period;
+    private LocalDate period;
     private String salary;
 }

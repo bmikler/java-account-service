@@ -1,6 +1,6 @@
 package account.user.model;
 
-import account.payment.Payment;
+import account.payment.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

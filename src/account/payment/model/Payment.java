@@ -1,4 +1,4 @@
-package account.payment;
+package account.payment.model;
 
 import account.user.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,6 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
