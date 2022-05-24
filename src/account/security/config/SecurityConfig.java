@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/signup").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/acct/payments").permitAll()
+                .antMatchers(HttpMethod.PUT,"/api/acct/payments").permitAll()
                 .antMatchers("/api/empl/payment").hasRole(USER.name())
                 .antMatchers("/api/auth/changepass").hasRole(USER.name())
                 .anyRequest().authenticated()

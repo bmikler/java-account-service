@@ -3,6 +3,7 @@ package account.payment;
 import account.payment.model.Response;
 import account.payment.model.dto.PaymentDtoRequest;
 import account.payment.model.dto.PaymentDtoResponse;
+import account.payment.util.DateConverter;
 import account.user.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -15,9 +16,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+import static account.payment.util.DateConverter.*;
 
 @RestController
 @RequestMapping("/api")
@@ -29,7 +33,10 @@ public class PaymentController {
 
     @GetMapping("/empl/payment")
     public ResponseEntity<?> getPayroll(@AuthenticationPrincipal User user,
-                                               @RequestBody(required = false) String period) {
+                                        @RequestParam(required = false)
+                                        @Pattern(regexp = "(0?[1-9]|1[012])-((?:19|20)[0-9][0-9])", message = "Wrong date!")
+                                                String period) {
+
         if (period != null) {
             return ResponseEntity.of(paymentService.getPaymentByPeriod(user, period));
         } else {

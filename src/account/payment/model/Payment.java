@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 
 @Entity
@@ -17,7 +18,7 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private LocalDate period;
+    private YearMonth period;
     private long salary;
     @ManyToOne
     private User user;
