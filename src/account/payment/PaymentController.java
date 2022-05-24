@@ -46,10 +46,10 @@ public class PaymentController {
     }
 
     @PutMapping("/acct/payments")
-    public ResponseEntity<?> updatePayment(@RequestBody PaymentDtoRequest paymentDtoRequest) {
+    public ResponseEntity<?> updatePayment(@RequestBody @Valid PaymentDtoRequest paymentDtoRequest) {
         paymentService.updatePayment(paymentDtoRequest);
 
-        return ResponseEntity.ok("Updated successfully!");
+        return ResponseEntity.ok(new Response("Updated successfully!"));
     }
 
 }

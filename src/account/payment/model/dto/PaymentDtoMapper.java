@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Service
 public class PaymentDtoMapper {
@@ -15,7 +16,7 @@ public class PaymentDtoMapper {
     public Payment map (PaymentDtoRequest paymentDtoRequest, User user) {
         Payment payment = new Payment();
         payment.setUser(user);
-        payment.setPeriod(LocalDate.parse("01-" + paymentDtoRequest.getPeriod(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        payment.setPeriod(convertStringToDate(paymentDtoRequest.getPeriod()));
         payment.setSalary(paymentDtoRequest.getSalary());
 
         return payment;
@@ -25,19 +26,24 @@ public class PaymentDtoMapper {
         return new PaymentDtoResponse(
                 payment.getUser().getName(),
                 payment.getUser().getLastname(),
-                payment.getPeriod(),
+                convertDateToString(payment.getPeriod()),
                 convertLongToSalary(payment.getSalary())
         );
     }
 
     private String convertLongToSalary(long salary){
-        return salary + " dollar(s)";
+
+        long dollars = salary / 100;
+
+        return dollars + " dollar(s) " + (salary - (dollars * 100)) + " cent(s)";
     }
     private LocalDate convertStringToDate(String date) {
 
-        DateFormatter formatter = new DateFormatter();
+        return LocalDate.parse("01-" + date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-        return LocalDate.parse(date);
+    }
 
+    private String convertDateToString(LocalDate date) {
+        return  date.format(DateTimeFormatter.ofPattern("LLLL-yyyy", Locale.ENGLISH));
     }
 }

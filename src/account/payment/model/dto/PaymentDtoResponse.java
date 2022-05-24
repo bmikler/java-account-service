@@ -14,6 +14,6 @@ import java.util.Date;
 public class PaymentDtoResponse {
     private String name;
     private String lastname;
-    private LocalDate period;
+    private String period;
     private String salary;
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +51,10 @@ public class PaymentService {
 
     public List<PaymentDtoResponse> getAllPaymentsByUser(User user) {
 
-        return paymentRepository.findPaymentByUser(user)
+        return paymentRepository.findPaymentByUserOrderByPeriodDesc(user)
                 .stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());
-
 
     }
 

@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    public List<Payment> findPaymentByUser(User user);
+    List<Payment> findPaymentByUserOrderByPeriodDesc(User user);
 
-    public Optional<Payment> findPaymentByUserAndPeriod(User user, String period);
+    Optional<Payment> findPaymentByUserAndPeriod(User user, String period);
 
 }
