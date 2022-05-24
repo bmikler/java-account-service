@@ -9,7 +9,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 @Constraint(validatedBy = PasswordSafetyValidator.class)
-@Target({FIELD})
+@Target({FIELD, PARAMETER})
 @Retention(RUNTIME)
 public @interface Password {
     String message() default "Value is invalid";

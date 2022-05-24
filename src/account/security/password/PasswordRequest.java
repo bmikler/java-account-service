@@ -11,8 +11,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class PasswordRequest {
     @JsonProperty("new_password")
-    @NotBlank
     @Size(min = 12, message = "Password length must be 12 chars minimum!")
     @Password(message = "The password is in the hacker's database!")
+    @NotBlank
     private String password;
 }

@@ -1,10 +1,9 @@
 package account.payment;
 
 import account.payment.model.Payment;
-import account.payment.model.dto.PaymentDtoMapper;
+import account.payment.util.PaymentDtoMapper;
 import account.payment.model.dto.PaymentDtoRequest;
 import account.payment.model.dto.PaymentDtoResponse;
-import account.payment.util.DateConverter;
 import account.user.UserRepository;
 import account.user.model.User;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

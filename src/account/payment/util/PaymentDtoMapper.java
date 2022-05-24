@@ -1,6 +1,8 @@
-package account.payment.model.dto;
+package account.payment.util;
 
 import account.payment.model.Payment;
+import account.payment.model.dto.PaymentDtoRequest;
+import account.payment.model.dto.PaymentDtoResponse;
 import account.payment.util.DateConverter;
 import account.user.model.User;
 import lombok.RequiredArgsConstructor;

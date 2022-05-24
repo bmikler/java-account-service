@@ -23,7 +23,7 @@ public class UserDtoRequest {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@acme.com+$", message = "Email must be registered in acme.com domain")
     private String email;
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(min = 12, message = "The password length must be at least 12 chars!")
     @Password(message = "The password is in the hacker's database!")
     private String password;
