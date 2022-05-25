@@ -2,14 +2,8 @@ package account.payment;
 
 import account.payment.model.Response;
 import account.payment.model.dto.PaymentDtoRequest;
-import account.payment.model.dto.PaymentDtoResponse;
-import account.payment.util.DateConverter;
 import account.user.model.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -17,11 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-
-import static account.payment.util.DateConverter.*;
 
 @RestController
 @RequestMapping("/api")

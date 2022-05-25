@@ -3,6 +3,7 @@ package account.payment.model.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,9 +15,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PaymentDtoRequest {
 
     @NotBlank
@@ -39,4 +40,5 @@ public class PaymentDtoRequest {
     public int hashCode() {
         return Objects.hash(employee, period, salary);
     }
+
 }

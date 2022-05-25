@@ -26,26 +26,11 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final PaymentDtoMapper mapper;
 
-    @Transactional
-    public void addPaymentsList(List<PaymentDtoRequest> payments) {
+    public Optional<PaymentDtoResponse> getPaymentByPeriod(User user, String period) {
+        return paymentRepository
+                .findPaymentByUserAndPeriod(user, stringToDate(period))
+                .map(mapper::map);
 
-        payments.forEach(p -> {
-            User user = userRepository
-                    .findByEmailIgnoreCase(p.getEmployee())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User " + p.getEmployee() + " not found!"));
-
-            Payment paymentToSave = mapper.map(p, user);
-
-            paymentRepository
-                    .findPaymentByUserAndPeriod(user, paymentToSave.getPeriod())
-                    .ifPresent(status -> {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment for " + p.getPeriod() + " for " + user.getName() + " is already saved");
-                    }
-            );
-
-            paymentRepository.save(paymentToSave);
-
-        });
     }
 
     public List<PaymentDtoResponse> getAllPaymentsByUser(User user) {
@@ -57,11 +42,40 @@ public class PaymentService {
 
     }
 
+    @Transactional
+    public void addPaymentsList(List<PaymentDtoRequest> payments) {
+
+        payments.forEach(this::addPayment);
+    }
+
+    private void addPayment(PaymentDtoRequest payment){
+
+        User user = findUser(payment.getEmployee());
+
+        Payment paymentToSave = mapper.map(payment, user);
+
+        if(isPaymentExist(paymentToSave)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This payment already exist!");
+        }
+
+        paymentRepository.save(paymentToSave);
+    }
+
+    private boolean isPaymentExist(Payment payment) {
+        return paymentRepository
+                .findPaymentByUserAndPeriod(payment.getUser(), payment.getPeriod())
+                .isPresent();
+    }
+
+    private User findUser(String email) {
+        return userRepository
+                .findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User " + email + " not found!"));
+    }
+
     public void updatePayment(PaymentDtoRequest paymentDtoRequest) {
 
-        User user = userRepository
-                .findByEmailIgnoreCase(paymentDtoRequest.getEmployee())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        User user = findUser(paymentDtoRequest.getEmployee());
 
         Payment payment = paymentRepository
                 .findPaymentByUserAndPeriod(user, stringToDate(paymentDtoRequest.getPeriod()))
@@ -69,13 +83,6 @@ public class PaymentService {
 
         payment.setSalary(paymentDtoRequest.getSalary());
         paymentRepository.save(payment);
-    }
-
-    public Optional<PaymentDtoResponse> getPaymentByPeriod(User user, String period) {
-        return paymentRepository
-                .findPaymentByUserAndPeriod(user, stringToDate(period))
-                .map(mapper::map);
-
     }
 
 
