@@ -34,6 +34,17 @@ public class User implements UserDetails {
     private boolean enabled;
     private boolean locked;
 
+    public User(String name, String lastname, String email, String password, UserRole role, List<Payment> payments, boolean enabled, boolean locked) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.payments = payments;
+        this.enabled = enabled;
+        this.locked = locked;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Set.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
@@ -63,4 +74,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
 }

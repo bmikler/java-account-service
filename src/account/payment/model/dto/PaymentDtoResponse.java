@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class PaymentDtoResponse {
     private String name;
