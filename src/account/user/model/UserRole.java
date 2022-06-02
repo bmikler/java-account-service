@@ -1,6 +1,6 @@
 package account.user.model;
 
 public enum UserRole {
-    USER,
+    USER, ACCOUNTANT, ADMINISTRATOR
 
 }

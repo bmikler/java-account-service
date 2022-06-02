@@ -37,17 +37,23 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("User can`t be null!");
         }
 
-        userRepository.findByEmailIgnoreCase(user.getEmail())
-                .ifPresent(p -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User exist!");
-                });
+        if (isUserExist(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User exist!");
+        }
 
         hashPassword(user);
 
-        User userToSave = userDtoMapper.mapToUser(user);
+        User userToSave = userRepository.findAll().size() > 0 ? userDtoMapper.mapToUser(user) : userDtoMapper.mapToAdministrator(user);
+
         User userSaved = userRepository.save(userToSave);
 
         return userDtoMapper.mapToDtoResponse(userSaved);
+
+    }
+
+    private boolean isUserExist(String email) {
+
+        return userRepository.findByEmailIgnoreCase(email).isPresent();
 
     }
 

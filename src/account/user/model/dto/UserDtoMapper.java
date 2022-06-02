@@ -5,6 +5,8 @@ import account.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class UserDtoMapper {
@@ -19,6 +21,7 @@ public class UserDtoMapper {
                 user.getName(),
                 user.getLastname(),
                 user.getEmail().toLowerCase()
+
         );
     }
 
@@ -28,16 +31,35 @@ public class UserDtoMapper {
             throw new IllegalArgumentException("User can`t be null!");
         }
 
-        User user = new User();
-        user.setName(userDtoRequest.getName());
-        user.setLastname(userDtoRequest.getLastname());
-        user.setEmail(userDtoRequest.getEmail().toLowerCase());
-        user.setPassword(userDtoRequest.getPassword());
-        user.setEnabled(true);
-        user.setLocked(false);
-        user.setRole(UserRole.USER);
+        return new User(
+                userDtoRequest.getName(),
+                userDtoRequest.getLastname(),
+                userDtoRequest.getEmail(),
+                userDtoRequest.getPassword(),
+                UserRole.USER,
+                new ArrayList<>(),
+                true,
+                false
+        );
 
-        return user;
+    }
+
+    public User mapToAdministrator(UserDtoRequest userDtoRequest) {
+
+        if (userDtoRequest == null) {
+            throw new IllegalArgumentException("User can`t be null!");
+        }
+
+        return new User (
+                userDtoRequest.getName(),
+                userDtoRequest.getLastname(),
+                userDtoRequest.getEmail(),
+                userDtoRequest.getPassword(),
+                UserRole.ADMINISTRATOR,
+                new ArrayList<>(),
+                true,
+                false
+        );
     }
 
 }
