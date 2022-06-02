@@ -1,13 +1,18 @@
 package account.admin;
 
+import account.user.UserService;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class AdminController {
+
+    private final UserService userService;
 
     @PutMapping("admin/user/role")
     public ResponseEntity<?> setRoles(){
@@ -21,7 +26,9 @@ public class AdminController {
 
     @GetMapping("api/admin/user")
     public ResponseEntity<?> getInfoAboutUsers() {
-        throw new RuntimeException("Not implemented yet");
+
+        return ResponseEntity.ok(userService.getAllUsersDesc());
+
     }
 
 }

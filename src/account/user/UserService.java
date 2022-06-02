@@ -16,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -30,6 +33,18 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username + " user not found"));
     }
 
+
+    public List<UserDtoResponse> getAllUsersDesc() {
+
+        return userRepository
+                .findAll()
+                .stream()
+                .map(userDtoMapper::mapToDtoResponse)
+                .sorted(Comparator.comparing(UserDtoResponse::getId))
+                .toList();
+
+
+    }
 
     public UserDtoResponse save(UserDtoRequest user) {
 

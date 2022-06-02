@@ -9,10 +9,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -27,20 +27,21 @@ public class User implements UserDetails {
     private String lastname;
     private String email;
     private String password;
+    @ElementCollection(targetClass = UserRole.class)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private List<UserRole> roles;
     @OneToMany(mappedBy = "id")
     private List<Payment> payments;
 
     private boolean enabled;
     private boolean locked;
 
-    public User(String name, String lastname, String email, String password, UserRole role, List<Payment> payments, boolean enabled, boolean locked) {
+    public User(String name, String lastname, String email, String password, List<UserRole> roles, List<Payment> payments, boolean enabled, boolean locked) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.payments = payments;
         this.enabled = enabled;
         this.locked = locked;
@@ -48,7 +49,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+
+        return roles.stream()
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
+                .collect(Collectors.toSet());
+
     }
 
     @Override
@@ -74,6 +79,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void addRole(UserRole role) {
+        roles.add(role);
+    }
+
+    public void removeRole(UserRole role) {
+        roles.remove(role);
     }
 
 }

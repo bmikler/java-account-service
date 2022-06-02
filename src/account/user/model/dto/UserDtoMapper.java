@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,11 @@ public class UserDtoMapper {
                 user.getId(),
                 user.getName(),
                 user.getLastname(),
-                user.getEmail().toLowerCase()
+                user.getEmail().toLowerCase(),
+                user.getRoles().stream()
+                        .map(Enum::name)
+                        .sorted(Comparator.reverseOrder())
+                        .collect(Collectors.toList())
 
         );
     }
@@ -36,7 +43,7 @@ public class UserDtoMapper {
                 userDtoRequest.getLastname(),
                 userDtoRequest.getEmail(),
                 userDtoRequest.getPassword(),
-                UserRole.USER,
+                List.of(UserRole.USER),
                 new ArrayList<>(),
                 true,
                 false
@@ -55,7 +62,7 @@ public class UserDtoMapper {
                 userDtoRequest.getLastname(),
                 userDtoRequest.getEmail(),
                 userDtoRequest.getPassword(),
-                UserRole.ADMINISTRATOR,
+                List.of(UserRole.ADMINISTRATOR),
                 new ArrayList<>(),
                 true,
                 false
