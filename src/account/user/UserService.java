@@ -1,12 +1,12 @@
 package account.user;
 
-import account.security.password.PasswordRequest;
+import account.admin.AdminOperation;
 import account.security.password.PasswordResponse;
 import account.user.model.User;
+import account.user.model.UserRole;
 import account.user.model.dto.UserDtoMapper;
 import account.user.model.dto.UserDtoRequest;
 import account.user.model.dto.UserDtoResponse;
-import account.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static account.admin.AdminOperation.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,24 +34,19 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmailIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " user not found"));
+                .orElseThrow(() -> new ResponseStatusException( HttpStatus.NOT_FOUND, "User not found!"));
     }
 
-
     public List<UserDtoResponse> getAllUsersDesc() {
-
         return userRepository
                 .findAll()
                 .stream()
                 .map(userDtoMapper::mapToDtoResponse)
                 .sorted(Comparator.comparing(UserDtoResponse::getId))
-                .toList();
-
-
+                .collect(Collectors.toList());
     }
 
     public UserDtoResponse save(UserDtoRequest user) {
-
         if (user == null) {
             throw new IllegalArgumentException("User can`t be null!");
         }
@@ -67,9 +66,7 @@ public class UserService implements UserDetailsService {
     }
 
     private boolean isUserExist(String email) {
-
         return userRepository.findByEmailIgnoreCase(email).isPresent();
-
     }
 
     private void hashPassword(UserDtoRequest userDtoRequest) {
@@ -87,6 +84,37 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return new PasswordResponse(user.getEmail());
+    }
+
+    public void deleteUserByEmail(String email) {
+
+        User user = (User) loadUserByUsername(email);
+
+        if (user.getRoles().contains(UserRole.ADMINISTRATOR)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't remove ADMINISTRATOR role!");
+        }
+
+        userRepository.delete(user);
+    }
+
+    @Transactional
+    public UserDtoResponse modifyRole(User user, UserRole role, AdminOperation operation) {
+
+        if (operation == GRANT) {
+            user.addRole(role);
+        }
+
+        if (operation == REMOVE){
+            user.removeRole(role);
+        }
+
+        User userSaved = userRepository.save(user);
+
+        return userDtoMapper.mapToDtoResponse(userSaved);
 
     }
+
+
+
+
 }

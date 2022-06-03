@@ -34,12 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/empl/payment").hasAnyRole(USER.name(), ACCOUNTANT.name())
                 .antMatchers(HttpMethod.POST, "/api/acct/payments").hasRole(ACCOUNTANT.name())
                 .antMatchers(HttpMethod.PUT, "/api/acct/payments").hasRole(ACCOUNTANT.name())
-                .antMatchers(HttpMethod.GET, "/api/admin/user").hasRole(ADMINISTRATOR.name())
-                .antMatchers(HttpMethod.DELETE, "/api/admin/user").hasRole(ADMINISTRATOR.name())
-                .antMatchers(HttpMethod.PUT, "/api/admin/user").hasRole(ADMINISTRATOR.name())
+                .antMatchers( "/api/admin/**").hasRole(ADMINISTRATOR.name())
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());
     }
 
     @Override

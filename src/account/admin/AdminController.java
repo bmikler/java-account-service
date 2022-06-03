@@ -1,11 +1,12 @@
 package account.admin;
 
 import account.user.UserService;
-import lombok.Getter;
+import account.user.model.dto.UserDtoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -13,18 +14,27 @@ import org.springframework.web.server.ResponseStatusException;
 public class AdminController {
 
     private final UserService userService;
+    private final AdminService adminService;
 
-    @PutMapping("admin/user/role")
-    public ResponseEntity<?> setRoles(){
-        throw new RuntimeException("Not implemented yet");
+    @PutMapping("/admin/user/role")
+    public ResponseEntity<?> setRoles(@RequestBody AdminRequest adminRequest){
+
+        UserDtoResponse response = adminService.modifyRole(adminRequest);
+
+        return ResponseEntity.ok(response);
+
     }
 
-    @DeleteMapping("api/admin/user")
-    public ResponseEntity<?> deleteUser() {
-        throw new RuntimeException("Not implemented yet");
+    @DeleteMapping("/admin/user/{email}")
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+
+        userService.deleteUserByEmail(email);
+
+        return ResponseEntity.ok()
+                .body(Map.of("user", email, "status", "Deleted successfully!"));
     }
 
-    @GetMapping("api/admin/user")
+    @GetMapping("/admin/user")
     public ResponseEntity<?> getInfoAboutUsers() {
 
         return ResponseEntity.ok(userService.getAllUsersDesc());

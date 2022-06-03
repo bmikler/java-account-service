@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +25,8 @@ public class UserDtoMapper {
                 user.getLastname(),
                 user.getEmail().toLowerCase(),
                 user.getRoles().stream()
-                        .map(Enum::name)
-                        .sorted(Comparator.reverseOrder())
+                        .map(r -> "ROLE_" + r.name())
+                        .sorted(Comparator.naturalOrder())
                         .collect(Collectors.toList())
 
         );
@@ -41,9 +41,9 @@ public class UserDtoMapper {
         return new User(
                 userDtoRequest.getName(),
                 userDtoRequest.getLastname(),
-                userDtoRequest.getEmail(),
+                userDtoRequest.getEmail().toLowerCase(),
                 userDtoRequest.getPassword(),
-                List.of(UserRole.USER),
+                Set.of(UserRole.USER),
                 new ArrayList<>(),
                 true,
                 false
@@ -60,9 +60,9 @@ public class UserDtoMapper {
         return new User (
                 userDtoRequest.getName(),
                 userDtoRequest.getLastname(),
-                userDtoRequest.getEmail(),
+                userDtoRequest.getEmail().toLowerCase(),
                 userDtoRequest.getPassword(),
-                List.of(UserRole.ADMINISTRATOR),
+                Set.of(UserRole.ADMINISTRATOR),
                 new ArrayList<>(),
                 true,
                 false

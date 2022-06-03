@@ -4,6 +4,7 @@ import account.payment.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,16 +28,16 @@ public class User implements UserDetails {
     private String lastname;
     private String email;
     private String password;
-    @ElementCollection(targetClass = UserRole.class)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = UserRole.class)
     @Enumerated(EnumType.STRING)
-    private List<UserRole> roles;
+    private Set<UserRole> roles;
     @OneToMany(mappedBy = "id")
     private List<Payment> payments;
 
     private boolean enabled;
     private boolean locked;
 
-    public User(String name, String lastname, String email, String password, List<UserRole> roles, List<Payment> payments, boolean enabled, boolean locked) {
+    public User(String name, String lastname, String email, String password, Set<UserRole> roles, List<Payment> payments, boolean enabled, boolean locked) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
