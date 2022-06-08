@@ -1,13 +1,17 @@
 package account.user.model;
 
+import account.admin.AdminOperation;
 import account.payment.model.Payment;
+import account.user.RoleChangeValidator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -83,11 +87,25 @@ public class User implements UserDetails {
     }
 
     public void addRole(UserRole role) {
+        RoleChangeValidator.validateRequest(this, role, AdminOperation.GRANT);
         roles.add(role);
     }
 
     public void removeRole(UserRole role) {
+        RoleChangeValidator.validateRequest(this, role, AdminOperation.REMOVE);
         roles.remove(role);
+    }
+
+    public void lock() {
+        if (roles.contains(UserRole.ADMINISTRATOR)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't lock the ADMINISTRATOR!");
+        }
+
+        locked = true;
+    }
+
+    public void unlock() {
+        locked = false;
     }
 
 }

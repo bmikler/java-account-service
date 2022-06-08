@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/acct/payments").hasRole(ACCOUNTANT.name())
                 .antMatchers(HttpMethod.PUT, "/api/acct/payments").hasRole(ACCOUNTANT.name())
                 .antMatchers( "/api/admin/**").hasRole(ADMINISTRATOR.name())
+                .antMatchers(HttpMethod.GET,"/api/security/events").hasRole(AUDITOR.name())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

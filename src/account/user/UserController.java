@@ -1,5 +1,6 @@
 package account.user;
 
+import account.security.loggin.LoggingService;
 import account.security.password.PasswordRequest;
 import account.security.password.PasswordResponse;
 import account.user.model.User;
@@ -10,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletMapping;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -19,11 +23,14 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final UserDtoMapper userDtoMapper;
+    private final LoggingService loggingService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid UserDtoRequest user) {
+    public ResponseEntity<?> signup(@RequestBody @Valid UserDtoRequest user, HttpServletRequest request) {
         UserDtoResponse userSaved = userService.save(user);
+
+        loggingService.userCreated(userSaved.getEmail(), request.getRequestURI());
+
         return ResponseEntity.ok(userSaved);
     }
 

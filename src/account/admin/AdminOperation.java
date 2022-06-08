@@ -2,6 +2,6 @@ package account.admin;
 
 public enum AdminOperation {
 
-    GRANT, REMOVE
+    GRANT, REMOVE, UNLOCK, LOCK
 
 }

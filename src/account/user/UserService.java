@@ -1,6 +1,7 @@
 package account.user;
 
 import account.admin.AdminOperation;
+import account.security.loggin.LoggingService;
 import account.security.password.PasswordResponse;
 import account.user.model.User;
 import account.user.model.UserRole;
@@ -104,8 +105,25 @@ public class UserService implements UserDetailsService {
             user.addRole(role);
         }
 
-        if (operation == REMOVE){
+        if (operation == REMOVE) {
             user.removeRole(role);
+        }
+
+        User userSaved = userRepository.save(user);
+
+        return userDtoMapper.mapToDtoResponse(userSaved);
+
+    }
+
+    @Transactional
+    public UserDtoResponse modifyAccess(User user, AdminOperation operation) {
+
+        if (operation == LOCK) {
+            user.lock();
+        }
+
+        if (operation == UNLOCK) {
+            user.unlock();
         }
 
         User userSaved = userRepository.save(user);
